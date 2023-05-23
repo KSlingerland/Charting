@@ -23,8 +23,8 @@ namespace Charting_Workshop.Controllers
         {
             return Enumerable.Range(1, 500).Select(index => new WeatherForecast
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
+                Label = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                Value = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();

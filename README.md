@@ -88,7 +88,7 @@ const d3 = await Promise.all([
 ```
 
 ## Barchart
-In het bestand ``` components/common/barchart.js ``` staat de basis van de barchart al. Nu gaan we deze invullen met data. Voeg op regel 31 onder 'Draw x-axis' het volgende toe:
+In het bestand ``` ClientApp/src/workshop/BarChart.js ``` staat de basis van de barchart al. Nu gaan we deze invullen met data. Voeg op regel 31 onder 'Draw x-axis' het volgende toe:
 
 ```js
 const xAxis = d3.axisBottom(xScale);
@@ -140,12 +140,12 @@ Hierin vullen we de barchart met verschillende attributen en roepen we de eerder
 
 
 ## Group by functie
-Nu volgt er nog een laatste stap. Het grouperen van de data; we willen graag de temperatuur per maand laten zien. Voeg in het ``` components/chart.js ``` onderaan het volgende toe:
+Nu volgt er nog een laatste stap. Het grouperen van de data; we willen graag de temperatuur per maand laten zien. Voeg in het ``` ClientApp/src/workshop/Workshop.js ``` onderaan het volgende toe:
 ```js
     groupDataByMonth(data) {
         const groups = {};
         data.forEach(item => {
-            const date = new Date(item.date);
+            const date = new Date(item.label);
             const year = date.getFullYear();
             const month = date.getMonth() + 1;
             const key = `${year}-${month}`;
@@ -159,7 +159,7 @@ Nu volgt er nog een laatste stap. Het grouperen van de data; we willen graag de 
         for (const key in groups) {
             if (groups.hasOwnProperty(key)) {
                 const group = groups[key];
-                const sum = group.reduce((total, item) => total + item.temperatureC, 0);
+                const sum = group.reduce((total, item) => total + item.value, 0);
                 const average = sum / group.length;
                 averages.push({
                     label: key,
