@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import * as d3 from 'd3';
 
 const BarChart = ({ data, width, height }) => {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
-
+  
   useEffect(() => {
     if (!data || data.length === 0) return;
 
