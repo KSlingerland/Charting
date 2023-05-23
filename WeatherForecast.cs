@@ -2,9 +2,9 @@ namespace Charting_Workshop
 {
     public class WeatherForecast
     {
-        public DateOnly Date { get; set; }
+        public DateOnly Label { get; set; }
 
-        public int TemperatureC { get; set; }
+        public int Value { get; set; }
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 
