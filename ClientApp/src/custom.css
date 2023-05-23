@@ -16,3 +16,13 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+/*.tooltip {*/
+/*  position: absolute;*/
+/*  z-index: 10;*/
+/*  background: rgba(0, 0, 0, 0.7);*/
+/*  color: white;*/
+/*  padding: 5px 10px;*/
+/*  border-radius: 4px;*/
+/*  font-size: 12px;*/
+/*}*/

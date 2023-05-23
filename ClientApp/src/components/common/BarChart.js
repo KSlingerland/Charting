@@ -1,102 +1,101 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as d3 from 'd3';
 
-const BarChart = ({ data, width, height }) => {
-  const svgRef = useRef(null);
-  const tooltipRef = useRef(null);
-  
-  useEffect(() => {
-    if (!data || data.length === 0) return;
+const BarChart = ({data, width, height}) => {
+    const svgRef = useRef(null);
+    const tooltipRef = useRef(null);
 
-    const svg = d3.select(svgRef.current);
-    const tooltip = d3.select(tooltipRef.current);
+    useEffect(() => {
+        if (!data || data.length === 0) return;
 
-    const margin = { top: 50, right: 50, bottom: 50, left: 50 };
-    const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom;
+        const svg = d3.select(svgRef.current);
+        const tooltip = d3.select(tooltipRef.current);
 
-    // Remove previous chart elements
-    svg.selectAll('*').remove();
+        const margin = {top: 50, right: 50, bottom: 50, left: 50};
+        const chartWidth = width - margin.left - margin.right;
+        const chartHeight = height - margin.top - margin.bottom;
 
-    // Create a group for the chart
-    const chart = svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+        // Remove previous chart elements
+        svg.selectAll('*').remove();
 
-    // Define scales
-    const xScale = d3.scaleBand()
-      .domain(data.map(d => d.label))
-      .range([0, chartWidth])
-      .padding(0.1);
+        // Create a group for the chart
+        const chart = svg.append('g')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.value)])
-      .range([chartHeight, 0]);
+        // Define scales
+        const xScale = d3.scaleBand()
+            .domain(data.map(d => d.label))
+            .range([0, chartWidth])
+            .padding(0.1);
 
-    // Draw bars
-    const bars = chart.selectAll('.bar')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => xScale(d.label))
-      .attr('y', d => yScale(d.value))
-      .attr('width', xScale.bandwidth())
-      .attr('height', d => chartHeight - yScale(d.value))
-      .attr('fill', 'steelblue')
-      .on('mouseover', (event, d) => {
-        // Show tooltip
-        tooltip
-          .style('opacity', 1)
-          .html(`Value: ${d.value}`)
-          .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY}px`);
-        
-        // Change bar color on hover
-        d3.select(event.target)
-          .attr('fill', 'orange');
-      })
-      .on('mouseout', (event, d) => {
-        // Hide tooltip
-        tooltip.style('opacity', 0);
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.value)])
+            .range([chartHeight, 0]);
 
-        // Restore bar color on hover out
-        d3.select(event.target)
-          .attr('fill', 'steelblue');
-      });
+        // Draw bars
+        const bars = chart.selectAll('.bar')
+            .data(data)
+            .enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('x', d => xScale(d.label))
+            .attr('y', d => yScale(d.value))
+            .attr('width', xScale.bandwidth())
+            .attr('height', d => chartHeight - yScale(d.value))
+            .attr('fill', 'steelblue')
+            .on('mouseover', (event, d) => {
+                // Show tooltip
+                tooltip
+                    .style('opacity', 1)
+                    .html(`Value: ${d.value}`)
+                    .style('left', `${event.pageX}px`)
+                    .style('top', `${event.pageY}px`);
 
-    // Draw x-axis
-    const xAxis = d3.axisBottom(xScale);
+                // Change bar color on hover
+                d3.select(event.target)
+                    .attr('fill', 'orange');
+            })
+            .on('mouseout', (event, d) => {
+                // Hide tooltip
+                tooltip.style('opacity', 0);
 
-    chart.append('g')
-      .attr('class', 'x-axis')
-      .attr('transform', `translate(0, ${chartHeight})`)
-      .call(xAxis);
+                // Restore bar color on hover out
+                d3.select(event.target)
+                    .attr('fill', 'steelblue');
+            });
 
-    // Draw y-axis
-    const yAxis = d3.axisLeft(yScale);
 
-    chart.append('g')
-      .attr('class', 'y-axis')
-      .call(yAxis);
+        // Draw x-axis
+        const xAxis = d3.axisBottom(xScale);
+        chart.append('g')
+            .attr('class', 'x-axis')
+            .attr('transform', `translate(0, ${chartHeight})`)
+            .call(xAxis);
 
-    // Listen to mousemove event on the SVG container
-    svg.on('mousemove', (event) => {
-      const [x, y] = d3.pointer(event);
-      
-      // Update tooltip position to follow the mouse
-      tooltip
-        .style('left', `${x + 10}px`)
-        .style('top', `${y - 10}px`);
-    });
+        // Draw y-axis
+        const yAxis = d3.axisLeft(yScale);
+        chart.append('g')
+            .attr('class', 'y-axis')
+            .call(yAxis);
+
+        // Listen to mousemove event on the SVG container
+        svg.on('mousemove', (event) => {
+            const [x, y] = d3.pointer(event);
+
+            // Update tooltip position to follow the mouse
+            tooltip
+                .style('left', `${x}px`)
+                .style('top', `${y}px`);
+        });
 
     }, [data, width, height]);
 
-  return (
-      <div>
-          <svg ref={svgRef} width={width} height={height}></svg>
-          <div ref={tooltipRef} className="tooltip"></div>
-      </div>
-      );
+    return (
+        <div>
+            <svg ref={svgRef} width={width} height={height}></svg>
+            <div ref={tooltipRef} className="tooltip"></div>
+        </div>
+    );
 };
 
 export default BarChart;
